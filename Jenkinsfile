@@ -1,8 +1,8 @@
 pipeline{
-    agent{
-        label any
-    }
-    podTemplate(yaml:'''
+    agent {
+        kubernetes{
+            cloud 'MyKubeConfig'
+            yaml """
     apiVersion: v1
     kind: Pod
     metadata:
@@ -15,15 +15,8 @@ pipeline{
      volumes:
       - name: shared-data
         emptyDir: {}
-
-    ''')
-    stages{
-        stage("Build Pod"){
-            steps{
-                echo "Success"
-
+    """
         }
     }
 
     }
-}
