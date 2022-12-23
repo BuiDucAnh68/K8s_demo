@@ -1,7 +1,7 @@
 pipeline{
     agent {
         kubernetes{
-            cloud 'MyKubeConfig'
+            cloud 'kubernetes'
             yaml """
     apiVersion: v1
     kind: Pod
