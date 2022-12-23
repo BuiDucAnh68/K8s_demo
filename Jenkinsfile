@@ -1,11 +1,8 @@
 pipeline{
     agent{
-        label agent
+        label any
     }
-    stages{
-        stage("Build Pod"){
-            steps{
-                podTemplate(yaml: readTrusted('k8spod.yaml')) {
+    podTemplate(yaml: readTrusted('k8spod.yaml')) {
                     node(POD_LABEL){
                         container('k6-machine'){
                             echo POD_CONTAINER
@@ -14,6 +11,10 @@ pipeline{
                     }
 
             }
+    stages{
+        stage("Build Pod"){
+            steps{
+                echo "Success"
 
         }
     }
