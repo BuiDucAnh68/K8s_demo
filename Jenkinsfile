@@ -2,15 +2,21 @@ pipeline{
     agent{
         label any
     }
-    podTemplate(yaml: readTrusted('k8spod.yaml')) {
-                    node(POD_LABEL){
-                        container('k6-machine'){
-                            echo POD_CONTAINER
-                            sh 'hostname'
-                        }
-                    }
+    podTemplate(yaml:'''
+    apiVersion: v1
+    kind: Pod
+    metadata:
+        name: k6-deploy-k8s
+    spec:
+     containers:
+      - name: k6-machine
+        image: grafana/k6:latest
 
-            }
+     volumes:
+      - name: shared-data
+        emptyDir: {}
+
+    ''')
     stages{
         stage("Build Pod"){
             steps{
