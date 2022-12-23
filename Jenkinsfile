@@ -1,11 +1,22 @@
 pipeline{
-  agent any
-  
-  stages{
-    stage('Hello'){
-      steps{
-        echo 'Hello Test1'
-      }
+    agent{
+        label agent
     }
-  }
+    stages{
+        stage("Build Pod"){
+            steps{
+                podTemplate(yaml: readTrusted('k8spod.yaml')) {
+                    node(POD_LABEL){
+                        container('k6-machine'){
+                            echo POD_CONTAINER
+                            sh 'hostname'
+                        }
+                    }
+
+            }
+
+        }
+    }
+
+    }
 }
