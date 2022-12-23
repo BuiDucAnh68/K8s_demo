@@ -18,5 +18,14 @@ pipeline{
     """
         }
     }
+    stages{
+        stage("Deploy"){
+            steps {
+                container('k6-machine'){
+                    sh '/bin/k6-machine'
+                } 
+            }
+        }
+    }
 
     }
