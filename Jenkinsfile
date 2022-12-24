@@ -22,7 +22,7 @@ pipeline{
         stage("Deploy"){
             steps {
                 container('k6-machine'){
-                    sh '/bin/k6-machine'
+                    sh '/bin/k6-machine && k6 run /tmp/k6.js'
                 } 
             }
         }
