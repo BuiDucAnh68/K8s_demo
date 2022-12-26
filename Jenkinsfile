@@ -9,7 +9,7 @@ pipeline{
         stage("Deploy K6 to Pod"){
             steps {
               
-                container('k6-machine'){
+                container('k6-test'){
                     sh 'kubectl delete -f k8spod.yaml'
                  } 
             }
