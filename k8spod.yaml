@@ -49,11 +49,11 @@ spec:
       resources: {}
       volumeMounts:
         - name: filek6
-          mountPath: /home/k6/k6.js
+          mountPath: /home/k6/
 
 
   volumes:
     - name: filek6
       hostPath:
-        path: ./k6.js
+        path: /scripts/test.js
         type: FileOrCreate
