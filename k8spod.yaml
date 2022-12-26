@@ -27,50 +27,33 @@
 #       storage: 1Gi
 ---
 ## Deployment K6
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: k6
+  name: k6-machine
   namespace: devops-tools
 
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: k6-deployment
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: k6-deployment
-    spec:
-      containers:
-        - name: k6-machine
-          image: grafana/k6
-          imagePullPolicy: Never
-          securityContext:
-            privileged: true
-          ports:
-            - name: k6-port
-              containerPort: 6565
-          command:
-            - sleep
-            - "3600"
-          resources: {}
-          volumeMounts:
-#             - name: folderk6
-#               mountPath: /home/k6/scripts
-            - name: filek6
-              mountPath: /home/k6/k6.js
-              
-              
-      volumes:
-#         - name: folderk6
-#           hostPath:
-#             path: ./k6.js
-#             type: DirectoryOrCreate
+  containers:
+    - name: k6-machine
+      image: grafana/k6
+      imagePullPolicy: Never
+      securityContext:
+        privileged: true
+      ports:
+        - name: k6-port
+          containerPort: 6565
+      command:
+        - sleep
+        - "3600"
+      resources: {}
+      volumeMounts:
         - name: filek6
-          hostPath:
-            path: ./k6.js
-            type: FileOrCreate
+          mountPath: /home/k6/k6.js
+
+
+  volumes:
+    - name: filek6
+      hostPath:
+        path: ./k6.js
+        type: FileOrCreate
