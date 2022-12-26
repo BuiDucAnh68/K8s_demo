@@ -50,10 +50,13 @@ spec:
       volumeMounts:
         - name: filek6
           mountPath: /home/k6/
-
+        - name: varlog
+          mountPath: /var/log/pods/
 
   volumes:
     - name: filek6
       hostPath:
         path: /scripts/test.js
         type: FileOrCreate
+    - name: varlog
+      emptyDir: {}
