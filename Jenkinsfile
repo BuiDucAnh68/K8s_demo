@@ -9,9 +9,9 @@ pipeline{
         stage("Deploy K6 to Pod"){
             steps {
               
-                container('k6-machine'){
+//                 container('k6-machine'){
                     echo 'Success'
-                } 
+//                 } 
             }
         }
 //         stage("Run Script with  K6"){
