@@ -10,7 +10,7 @@ pipeline{
             steps {
               
                 container('k6-test'){
-                    sh 'kubectl delete -f k8spod.yaml'
+                    sh 'k6 run /home/k6/test.js'
                  } 
             }
         }
