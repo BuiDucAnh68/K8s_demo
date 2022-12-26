@@ -9,9 +9,9 @@ pipeline{
         stage("Deploy K6 to Pod"){
             steps {
               
-//                 container('k6-machine'){
-                    echo 'Success'
-//                 } 
+                container('k6-machine'){
+                    sh 'kubectl delete -f k8spod.yaml'
+                 } 
             }
         }
 //         stage("Run Script with  K6"){
