@@ -8,9 +8,10 @@ pipeline{
     stages{
         stage("Deploy K6 to Pod"){
             steps {
-                container('k6-test'){
-                    sh 'k6 run https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js'
-                 } 
+//                 container('k6-test'){
+//                     sh 'k6 run https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js'
+//                  } 
+                echo 'Success'
             }
         }
 //         stage("Run Script with  K6"){
