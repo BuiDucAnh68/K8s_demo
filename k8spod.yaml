@@ -36,7 +36,7 @@ metadata:
 spec:
   containers:
     - name: k6-machine
-      image: ducanh68/k6-machine:latest
+      image: loadimpact/k6
       imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
