@@ -37,7 +37,7 @@ spec:
   containers:
     - name: k6-machine
       image: ducanh68/k6-machine:latest
-      imagePullPolicy: Never
+      imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
       ports:
