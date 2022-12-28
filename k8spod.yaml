@@ -30,12 +30,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: k6-test
+  name: k6-machine
   namespace: devops-tools
 
 spec:
   containers:
-    - name: k6-test
+    - name: k6-machine
       image: ducanh68/k6-machine
       imagePullPolicy: Never
       securityContext:
