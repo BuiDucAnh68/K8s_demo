@@ -36,7 +36,7 @@ metadata:
 spec:
   containers:
     - name: k6-machine
-      image: ducanh68/k6-machine
+      image: ducanh68/k6-machine:latest
       imagePullPolicy: Never
       securityContext:
         privileged: true
