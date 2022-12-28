@@ -6,22 +6,22 @@ pipeline{
         }
     }
     stages{
+        stage('Performance Testing') {
+            steps{
+                container ('k6-test'){
+                    echo 'Running performance tests...'
+                    sh 'k6 run /home/k6/scripts/test.js --out influxdb=http://10.0.167.19:8086/myk6db'
+                }
+                
+        }
         stage("Deploy K6 to Pod"){
             steps {
-//                 container('k6-test'){
-//                     sh 'k6 run https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js'
-//                  } 
-                echo 'Success'
+                container('k6-test'){
+                    echo 'Success'
+                 } 
+                
             }
         }
-//         stage("Run Script with  K6"){
-//             steps{
-//                 container('k6-machine'){
-//                     sh "k6 run https://github.com/BuiDucAnh68/K8s_demo/blob/main/k6.js"
-//                 }
-//             }
-            
-//         }
               
     }
 
