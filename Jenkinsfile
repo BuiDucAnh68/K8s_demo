@@ -2,27 +2,23 @@ pipeline{
     agent {
         kubernetes{
             cloud 'kubernetes'
-            yamlFile 'k8spod.yaml'
+            
         }
+    }
+    podTemplate(yaml: readTrusted('k8spod.yaml'))
+    node(POD_LABEL){
+        container('k6-machine'){
+            sh 'k6 run /home/k6/scripts/test.js --out influxdb=http://10.0.167.19:8086/myk6db'
+        }
+
     }
     stages{
         stage('Performance Testing') {
             steps{
-                container ('k6test'){
-                    echo 'Running performance tests...'
-                    sh 'k6 run /home/k6/scripts/test.js --out influxdb=http://10.0.167.19:8086/myk6db'
+                 echo 'Success'
                 }
                 
         }
         }
-        stage("Deploy K6 to Pod"){
-            steps {
-                container('k6test'){
-                    echo 'Success'
-                 } 
-                
-            }
+        
         }
-        }
-    
-} 
