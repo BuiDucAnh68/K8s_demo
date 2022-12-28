@@ -9,9 +9,11 @@ pipeline{
         stage('Performance Testing') {
             steps{
                 container ('k6-test'){
+                    echo 'Running performance tests...'
                     sh 'k6 run /home/k6/scripts/test.js --out influxdb=http://10.0.167.19:8086/myk6db'
                 }
                 
+        }
         }
         stage("Deploy K6 to Pod"){
             steps {
@@ -22,5 +24,5 @@ pipeline{
             }
         }
         }
-    }
-}  
+    
+} 
