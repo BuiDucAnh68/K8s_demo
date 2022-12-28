@@ -2,7 +2,7 @@ pipeline{
     agent {
         kubernetes{
             cloud 'kubernetes'
-            inheritfrom 'k6machine'
+            inheritFrom 'k6machine'
             yamlFile: 'k8spods.yaml'
             
         }
