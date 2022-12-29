@@ -46,6 +46,9 @@ spec:
       command:
         - sleep
         - "3600"
+        - "apk add curl -y"
+        - "curl -o /home/scripts/ https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js"
+        - "k6 run /home/scripts/test.js"
       resources: {}
       volumeMounts:
         - name: filek6
