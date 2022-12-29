@@ -54,7 +54,7 @@ spec:
         - name: k6-port
           containerPort: 6565
       command: ["/bin/sh"]
-     args: ["-c","k6 run /home/scripts/test.js"]
+      args: ["-c","k6 run /home/scripts/test.js"]
       resources: {}
       volumeMounts:
         - name: filek6
