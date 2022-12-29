@@ -36,7 +36,7 @@ metadata:
 spec:
   containers:
     - name: k6-machine
-      image: ducanh68/xk6-output-prometheus-remote
+      image: ducanh68/xk6-output-prometheus-remote:latest
       imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
@@ -44,7 +44,7 @@ spec:
         - name: k6-port
           containerPort: 6565
       command: ["/bin/sh"]
-      args: ["-c","apk add curl -y;curl -o /home/scripts/ https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js;k6 run /home/scripts/test.js"]
+      args: ["-c","curl -o /home/scripts/ https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js;k6 run /home/scripts/test.js"]
       resources: {}
       volumeMounts:
         - name: filek6
