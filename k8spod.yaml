@@ -40,7 +40,7 @@ spec:
       args:
         - "-o"
         - "/home/scripts/test.js"
-        - "https://github.com/BuiDucAnh68/K8s_demo/blob/main/test.js"
+        - "https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js"
       volumeMounts:
       - name: filek6
         mountPath: /home/scripts/
