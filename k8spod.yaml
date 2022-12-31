@@ -54,7 +54,7 @@ spec:
         - name: k6-port
           containerPort: 6565
       command: ["/bin/sh"]
-      args: ["-c","K6_PROMETHEUS_RW_SERVER_URL=http://10.0.243.205:9090/api/v1/write k6 run -o xk6-prometheus-rw /home/scripts/test.js"]
+      args: ["-c","K6_PROMETHEUS_RW_SERVER_URL=http://10.0.243.212:9090/api/v1/write k6 run -o xk6-prometheus-rw /home/scripts/test.js"]
       resources: {}
       volumeMounts:
         - name: filek6
