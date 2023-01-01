@@ -1,11 +1,10 @@
 pipeline{
     agent{
-    kubernetes{
+    kubernetes {
         cloud 'kubernetes'
-        yamlFile: 'k8spod.yaml'
+        yamlFile 'k8spod.yaml'
     }
-    
-    }
+   }
     stages{
         stage('Run test'){
             steps{
