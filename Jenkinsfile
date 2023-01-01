@@ -6,6 +6,13 @@ pipeline{
     }
    }
     stages{
+        stage('Add Curl Container'){
+            steps{
+                container('k6-machine'){
+                    sh 'apk --no-cache add curl'
+                }
+            }
+        }
         stage('Curl File JS'){
             steps{
                 container('k6-machine'){
