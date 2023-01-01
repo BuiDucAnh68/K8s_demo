@@ -1,7 +1,7 @@
 pipeline{
     agent{
     kubernetes{
-        podTemplate(yaml: readTrusted('k8spod.yaml'))
+        yamlFile: 'k8spod.yaml'
     }
     
     }
