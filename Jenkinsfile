@@ -1,6 +1,7 @@
 pipeline{
     agent{
     kubernetes{
+        cloud 'kubernetes'
         yamlFile: 'k8spod.yaml'
     }
     
