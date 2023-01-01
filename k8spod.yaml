@@ -56,7 +56,6 @@ spec:
       command:
         - sleep
         - "1d"
-        - cat
       tty: true
       resources: {}
       volumeMounts:
