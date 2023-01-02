@@ -19,6 +19,7 @@ export default function () {
     'body size is 11,105 bytes': (r) => r.body.length == 11105,
     'Protocol TCP: ': (r) => r.proto === 'TCP',
     'Protocol is HTTP/2': (r) => r.proto === 'HTTP/2.0',
+    'is OCSP response good': (r) => r.ocsp.status === http.OCSP_STATUS_UNKNOWN,
   });
   sleep(1);
 }
