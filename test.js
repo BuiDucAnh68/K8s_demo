@@ -1,40 +1,29 @@
 import http from 'k6/http';
-import { check, group, sleep } from 'k6';
+import { sleep } from 'k6';
 
 export const options = {
   stages: [
-    { duration: '5m', target: 100 }, // simulate ramp-up of traffic from 1 to 100 users over 5 minutes.
-    { duration: '10m', target: 100 }, // stay at 100 users for 10 minutes
-    { duration: '5m', target: 0 }, // ramp-down to 0 users
+    { duration: '2m', target: 100 }, // below normal load
+    { duration: '5m', target: 100 },
+    { duration: '2m', target: 200 }, // normal load
+    { duration: '5m', target: 200 },
+    { duration: '2m', target: 300 }, // around the breaking point
+    { duration: '5m', target: 300 },
+    { duration: '2m', target: 400 }, // beyond the breaking point
+    { duration: '5m', target: 400 },
+    { duration: '10m', target: 0 }, // scale down. Recovery stage.
   ],
-  thresholds: {
-    'http_req_duration': ['p(99)<1500'], // 99% of requests must complete below 1.5s
-    'logged in successfully': ['p(99)<1500'], // 99% of requests must complete below 1.5s
-  },
 };
 
-const BASE_URL = 'https://test-api.k6.io';
-const USERNAME = 'TestUser';
-const PASSWORD = 'SuperCroc2020';
+export default function () {
+  const BASE_URL = 'https://test-api.k6.io'; // make sure this is not production
 
-export default () => {
-  const loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
-    username: USERNAME,
-    password: PASSWORD,
-  });
-
-  check(loginRes, {
-    'logged in successfully': (resp) => resp.json('access') !== '',
-  });
-
-  const authHeaders = {
-    headers: {
-      Authorization: `Bearer ${loginRes.json('access')}`,
-    },
-  };
-
-  const myObjects = http.get(`${BASE_URL}/my/crocodiles/`, authHeaders).json();
-  check(myObjects, { 'retrieved crocodiles': (obj) => obj.length > 0 });
+  const responses = http.batch([
+    ['GET', `${BASE_URL}/public/crocodiles/1/`, null, { tags: { name: 'PublicCrocs' } }],
+    ['GET', `${BASE_URL}/public/crocodiles/2/`, null, { tags: { name: 'PublicCrocs' } }],
+    ['GET', `${BASE_URL}/public/crocodiles/3/`, null, { tags: { name: 'PublicCrocs' } }],
+    ['GET', `${BASE_URL}/public/crocodiles/4/`, null, { tags: { name: 'PublicCrocs' } }],
+  ]);
 
   sleep(1);
-};
+}
