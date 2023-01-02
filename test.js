@@ -10,6 +10,7 @@ export const options = {
 
 export default function () {
   const res = http.get('https://httpbin.test.k6.io/');
-  check(res,{'status was 200': (r) => r.status === 200});
+  check(res,{'verify homepage text': (r) =>
+      r.body.includes('Collection of simple web-pages suitable for load testing'),});
   sleep(1);
 }
