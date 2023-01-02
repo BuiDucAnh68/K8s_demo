@@ -27,5 +27,12 @@ pipeline{
                 }
             }
         }
+        stage('Show Test JSON Dashboard Jenkins'){
+            steps{
+                container('k6-machine'){
+                    sh 'cat /home/scripts/test.json'
+                }
+            }
+        }
     }
 }
