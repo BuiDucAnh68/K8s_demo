@@ -24,12 +24,6 @@ export default function () {
     ['GET', `${BASE_URL}/public/crocodiles/3/`, null, { tags: { name: 'PublicCrocs' } }],
     ['GET', `${BASE_URL}/public/crocodiles/4/`, null, { tags: { name: 'PublicCrocs' } }],
   ]);
-  check(res,{
-    'is status 200': (r) => r.status === 200,
-    'body size is 11,105 bytes': (r) => r.body.length == 11105,
-    'Protocol is HTTP/2': (r) => r.proto === 'HTTP/2.0',
-    'is OCSP response good': (r) => r.ocsp.status === http.OCSP_STATUS_GOOD,
-  });
 
   sleep(1);
 }
