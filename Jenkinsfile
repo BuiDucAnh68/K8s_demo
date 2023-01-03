@@ -23,7 +23,7 @@ pipeline{
         stage('Run Test K6 Stress Test'){
             steps{
                 container('k6-machine'){
-                    sh 'K6_PROMETHEUS_RW_SERVER_URL=http://grafana.gt.zing.vn:9090//api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js'
+                    sh 'K6_PROMETHEUS_RW_SERVER_URL=http://grafana.gt.zing.vn:9090/api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js'
                 }
             }
         }
