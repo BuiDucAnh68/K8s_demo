@@ -1,29 +1,42 @@
 import http from 'k6/http';
-import { sleep } from 'k6';
+import { check, group, sleep, fail } from 'k6';
 
 export const options = {
-  stages: [
-    { duration: '2m', target: 100 }, // below normal load
-    { duration: '5m', target: 100 },
-    { duration: '2m', target: 200 }, // normal load
-    { duration: '5m', target: 200 },
-    { duration: '2m', target: 300 }, // around the breaking point
-    { duration: '5m', target: 300 },
-    { duration: '2m', target: 400 }, // beyond the breaking point
-    { duration: '5m', target: 400 },
-    { duration: '10m', target: 0 }, // scale down. Recovery stage.
-  ],
+  vus: 1, // 1 user looping for 1 minute
+  duration: '1m',
+
+  thresholds: {
+    http_req_duration: ['p(99)<1500'], // 99% of requests must complete below 1.5s
+  },
 };
 
-export default function () {
-  const BASE_URL = 'https://test-api.k6.io'; // make sure this is not production
+const BASE_URL = 'https://test-api.k6.io';
+const USERNAME = 'TestUser';
+const PASSWORD = 'SuperCroc2020';
 
-  const responses = http.batch([
-    ['GET', `${BASE_URL}/public/crocodiles/1/`, null, { tags: { name: 'PublicCrocs' } }],
-    ['GET', `${BASE_URL}/public/crocodiles/2/`, null, { tags: { name: 'PublicCrocs' } }],
-    ['GET', `${BASE_URL}/public/crocodiles/3/`, null, { tags: { name: 'PublicCrocs' } }],
-    ['GET', `${BASE_URL}/public/crocodiles/4/`, null, { tags: { name: 'PublicCrocs' } }],
-  ]);
+export default () => {
+  const loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
+    username: USERNAME,
+    password: PASSWORD,
+  });
+
+  check(loginRes, {
+    'logged in successfully': (resp) => resp.json('access') !== '',
+  });
+
+  const authHeaders = {
+    headers: {
+      Authorization: `Bearer ${loginRes.json('access')}`,
+    },
+  };
+
+  const myObjects = http.get(`${BASE_URL}/my/crocodiles/`, authHeaders).json();
+  check(myObjects, { 
+  'retrieved crocodiles': (obj) => obj.length > 0 ,'is status 200': (r) => r.status === 200,
+  'body size is 11,105 bytes': (r) => r.body.length == 11105,
+  'Protocol TCP: ': (r) => r.proto === 'TCP',
+  'Protocol is HTTP/2': (r) => r.proto === 'HTTP/2.0',
+  'is OCSP response good': (r) => r.ocsp.status === http.OCSP_STATUS_GOOD,});
 
   sleep(1);
-}
+};
