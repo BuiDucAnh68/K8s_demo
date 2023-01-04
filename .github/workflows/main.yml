@@ -1,6 +1,12 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+name: Deploy-k6
+run-name: deploy_k6_kubernetes
+on:
+  push:
+    branches: [main]
+    paths: .github/workflows/main.yml
+  pull_request:
+    branches: none
+  workflow_dispatch:
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
