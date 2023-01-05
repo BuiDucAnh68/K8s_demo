@@ -12,7 +12,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - name: Update version
-        uses: sudo apt-get update -y
+        uses: apt-get update -y
+      - name: Install Curl
+        uses: apt install curl -y
       - name: Install Kubectl Step 1
         uses: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       - name: Install kubectl Step 2
