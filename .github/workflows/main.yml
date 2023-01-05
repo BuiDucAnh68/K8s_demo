@@ -11,16 +11,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Update version
-        uses: apt-get update -y
-      - name: Install Curl
-        uses: apt install curl -y
-      - name: Install Kubectl Step 1
-        uses: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      - name: Install kubectl Step 2
-        uses: sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-      - name: Install Finish
-        uses: sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl 
       - name: Create KubeConfig
         run: |
           mkdir ${HOME}/.kube
