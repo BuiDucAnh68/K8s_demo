@@ -1,19 +1,20 @@
-name: Deploy-k6
-run-name: deploy_k6_kubernetes
-on:
+name: pipeline K6
+on: 
   push:
     branches: [main]
-    paths: .github/workflows/main.yml
   pull_request:
-    branches: none
-  workflow_dispatch:
+    branches: [main]
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
+  deploy:
+    name: Deploy Pod to Kubernetes
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Create KubeConfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+          cat ${HOME}/.kube/config
+      - name: Deploy K6
+        uses: kubectl apply -f k8spod.yaml
