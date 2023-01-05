@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     name: Deploy Pod to Kubernetes
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -17,4 +17,4 @@ jobs:
           echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
           cat ${HOME}/.kube/config
       - name: Deploy K6
-        uses: kubectl apply -f k8spod.yaml
+        uses: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml
