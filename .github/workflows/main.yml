@@ -16,5 +16,5 @@ jobs:
           mkdir ${HOME}/.kube
           echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
           cat ${HOME}/.kube/config
-      # - name: Deploy K6
-      #   uses: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml
+      - name: Deploy K6
+        uses: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml
