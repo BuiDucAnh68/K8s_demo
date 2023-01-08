@@ -5,16 +5,15 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  deploy:
+  build:
     name: Deploy Pod to Kubernetes
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Create KubeConfig
-        run: |
-          mkdir ${HOME}/.kube
-          echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
-          cat ${HOME}/.kube/config
-#       - name: Deploy K6
-#         uses: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml
+      - uses: actions/checkout@v2
+      - name: Sync ArgoCD Application
+        uses: omegion/argocd-actions@master
+        with:
+#           address: "vault.example.com"
+          token: ${{ secrets.ARGOCD_TOKEN }}
+          action: sync
+          appName: "syncargocd"
