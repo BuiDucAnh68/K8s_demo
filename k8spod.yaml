@@ -28,7 +28,7 @@ spec:
           containerPort: 6565
       command:
         - sleep
-        - "1d"
+        - "3600"
       tty: true
       resources: {}
       volumeMounts:
