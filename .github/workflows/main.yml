@@ -1,21 +1,35 @@
-name: pipeline K6
-on: 
+name: Pipeline CI/CD K6
+on:
   push:
     branches: [main]
-  repository_dispatch:
-    types: [new-image]
+  release:
+    types:
+      - published
 jobs:
   build:
-    name: Deploy Pod to Kubernetes
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Update image version
-        id: ducanh68
-        uses: mikefarah/yq@master
+    runs-on: ubuntu
+    steps: 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Login to Docker Hub
+        uses: docker/login-actions@v2
         with:
-         cmd: yq eval '.spec.template.spec.containers[0].image = "${{ github.event.client_payload.image }}"' -i K8s/deployment.yaml
-      
-      - uses: stefanzweifel/git-auto-commit-action@v4
+          username: ${{ secrets.DOCKER_USERNAME}}
+          password: ${{ secrets.DOCKER_PASSWORD_TOKEN }}
+          
+      - name: Push Chanege
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-         commit_message: Apply image name changes
+          source_file: K8s/deployment.yml
+          destination_repo: BuiDucAnh68/K8s_demo
+          destination_branch: main
+          destination_folder: K8s
