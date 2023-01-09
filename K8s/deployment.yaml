@@ -18,7 +18,7 @@ spec:
       containers:
         - name: nginx-deployment
           # image của container docker
-          image: ""
+          image: nginx
           ports:
             # port bên trong container
             - containerPort: 8080
@@ -43,4 +43,4 @@ spec:
   template:
     spec:
       containers:
-        - image: ""
+        - image: nginx
