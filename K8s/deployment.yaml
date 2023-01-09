@@ -17,12 +17,12 @@ spec:
         app: nginx-deployment
     spec:
       containers:
-      - name: nginx-deployment
-      # image của container docker
-        image: nginx
-        ports:
-        # port bên trong container
-        - containerPort: 8000
+        - name: nginx-deployment
+          # image của container docker
+          image: ""
+          ports:
+            # port bên trong container
+            - containerPort: 8000
 ---
 apiVersion: v1
 # kind là loại Service
@@ -32,13 +32,17 @@ metadata:
   namespace: test
 spec:
   ports:
-  # port bên ngoài của pods mà các pods có thể giao tiếp được với nhau
-  - port: 80
-  # port target với 8080 của deployment
-    targetPort: 8000
-    protocol: TCP
-    name: http
+    # port bên ngoài của pods mà các pods có thể giao tiếp được với nhau
+    - port: 80
+      # port target với 8080 của deployment
+      targetPort: 8000
+      protocol: TCP
+      name: http
   selector:
-  # dựa theo app : nginx-deployment ở labels trên kia sẽ map với service này
+    # dựa theo app : nginx-deployment ở labels trên kia sẽ map với service này
     app: nginx-deployment
   type: ClusterIP
+  template:
+    spec:
+      containers:
+        - image: ""
