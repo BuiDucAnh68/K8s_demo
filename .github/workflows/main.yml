@@ -2,8 +2,8 @@ name: pipeline K6
 on: 
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  repository_dispatch:
+    types: [new-image]
 jobs:
   build:
     name: Deploy Pod to Kubernetes
