@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-nginx
+  namespace: test
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/BuiDucAnh68/K8s_demo.git
+    targetRevision: HEAD
+    path: K8s
+  destination: 
+    server: https://kubernetes.default.svc
+    namespace: test
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      selfHeal: true
+      prune: true
