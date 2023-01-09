@@ -16,12 +16,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME}}
           password: ${{ secrets.DOCKER_PASSWORD_TOKEN }}
           
-      - name: Push Chanege
-        uses: dmnemec/copy_file_to_another_repo_action@main
+      - name: deploy to cluster
+        uses: wahyd4/kubectl-helm-action@master
         env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
         with:
-          source_file: K8s/deployment.yml
-          destination_repo: BuiDucAnh68/K8s_demo
-          destination_branch: main
-          destination_folder: K8s
+          args: kubectl apply -f K8s/deployment.yaml
