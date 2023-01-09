@@ -4,6 +4,7 @@ kind: Deployment
 # kind là loại Deployment
 metadata:
   name: nginx-deployment
+  namespace: nginx-test
 spec:
   replicas: 2
   # replica ở đây sẽ tạo ra 2 pods luôn luôn chạy, khi một số pods bị down hay chết hay bất kì lý do nào đó sẽ tự động tạo lại số lượng pods bằng 2
@@ -28,6 +29,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-svc
+  namespace: nginx-test
 spec:
   ports:
     # port bên ngoài của pods mà các pods có thể giao tiếp được với nhau
