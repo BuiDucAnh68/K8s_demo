@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Sync ArgoCD Application
-        uses: omegion/argocd-actions@master
+      - name: Update image version
+        id: ducanh68
+        uses: mikefarah/yq@master
         with:
-          address: "103.245.250.55"
-          token: ${{ secrets.ARGOCD_TOKEN }}
-          action: sync
-          appName: "syncargocd"
+         cmd: yq eval '.spec.template.spec.containers[0].image = "${{ github.event.client_payload.image }}"' -i K8s/deployment.yaml
+      
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+         commit_message: Apply image name changes
