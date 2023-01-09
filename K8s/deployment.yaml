@@ -11,10 +11,10 @@ spec:
   selector:
     matchLabels:
       app: nginx-deployment
-  template:
-    metadata:
-      labels:
-        app: nginx-deployment
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx-deployment
     spec:
       containers:
         - name: nginx-deployment
