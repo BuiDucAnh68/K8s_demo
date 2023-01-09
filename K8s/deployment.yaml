@@ -4,7 +4,6 @@ kind: Deployment
 # kind là loại Deployment
 metadata:
   name: nginx-deployment
-  namespace: test
 spec:
   replicas: 2
   # replica ở đây sẽ tạo ra 2 pods luôn luôn chạy, khi một số pods bị down hay chết hay bất kì lý do nào đó sẽ tự động tạo lại số lượng pods bằng 2
@@ -17,32 +16,27 @@ spec:
         app: nginx-deployment
     spec:
       containers:
-        - name: nginx-deployment
-          # image của container docker
-          image: ""
-          ports:
-            # port bên trong container
-            - containerPort: 8000
+      - name: nginx-deployment
+      # image của container docker
+        image: nginx
+        ports:
+        # port bên trong container
+        - containerPort: 8080
 ---
 apiVersion: v1
 # kind là loại Service
 kind: Service
 metadata:
   name: nginx-svc
-  namespace: test
 spec:
   ports:
-    # port bên ngoài của pods mà các pods có thể giao tiếp được với nhau
-    - port: 80
-      # port target với 8080 của deployment
-      targetPort: 8000
-      protocol: TCP
-      name: http
+  # port bên ngoài của pods mà các pods có thể giao tiếp được với nhau
+  - port: 80
+  # port target với 8080 của deployment
+    targetPort: 8080
+    protocol: TCP
+    name: http
   selector:
-    # dựa theo app : nginx-deployment ở labels trên kia sẽ map với service này
+  # dựa theo app : nginx-deployment ở labels trên kia sẽ map với service này
     app: nginx-deployment
   type: ClusterIP
-  template:
-    spec:
-      containers:
-        - image: ""
