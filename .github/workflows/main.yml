@@ -1,9 +1,9 @@
-name: Pipeline K6 CI/CD
+name: Pipeline CI/CD K6
 on:
   push:
     branches: [main]
 jobs:
-  buid: 
+  build: 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -14,6 +14,7 @@ jobs:
           lsb -release
           sudo apt-get install -y
           sudo apt-get install make wget curl tar git -y
+
       - name: Config Golang
         uses: actions-setup-got@v3
         with: 
