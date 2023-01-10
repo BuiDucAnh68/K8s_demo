@@ -13,8 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-
-        
       - name: Install Package
         run: |
           sudo apt-get update -y
@@ -25,14 +23,17 @@ jobs:
         with: 
           go-version:  '>=1.18.1'
      
-      - name: Test config go
-        run: go version
       - name: Deploy K6-Operator
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
-        run: |
-          cd ./k6-operator
-          make deploy
+        uses: myrotvorets/kubectl-action@2.0.0
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          version: latest
+          args: cd ./k6-operator && make deploy
+          
+#         run: |
+#           cd ./k6-operator
+#           make deploy
+          
 #       - name: Create/Modify deployment
 #         uses: gane5hvarma/kubectl-actions@master
 #         env:
