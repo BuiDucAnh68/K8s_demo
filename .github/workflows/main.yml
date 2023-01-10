@@ -28,7 +28,7 @@ jobs:
         with:
           config: ${{ secrets.KUBE_CONFIG }}
           version: latest
-          args: kubectl get namespace
+          args: get namespace
           
 #         run: |
 #           cd ./k6-operator
