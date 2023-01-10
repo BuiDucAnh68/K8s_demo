@@ -33,7 +33,7 @@ jobs:
       - name: Deploy and Run pod K6
         run: |
           cd ./K6-Machine
-          kubectl apply -f /Pod.yaml --validate=false
+          kubectl apply -f Pod.yaml --validate=false
         
       
         
