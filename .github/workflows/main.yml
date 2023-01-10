@@ -13,18 +13,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-#       - name: Config Golang
-#         uses: actions-setup-go@v3
-#         with: 
-#           go-version:  '>=1.18.1'
+
         
       - name: Install Package
         run: |
           sudo apt-get update -y
           sudo apt-get install make wget curl git -y
       
-#       - name: Test config go
-#         run: go version
+      - name: Config Golang
+        uses: actions/setup-go@v3
+        with: 
+          go-version:  '>=1.18.1'
+     
+      - name: Test config go
+        run: go version
 
       - name: Create/Modify deployment
         uses: gane5hvarma/kubectl-actions@master
