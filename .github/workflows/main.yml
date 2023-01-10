@@ -8,8 +8,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - run: |
+    
+      - uses: ./.github/workflows/main.yml 
+        run: |
           sudo apt-get update -y
           sudo apt-get install make wget curl tar git -y
 
