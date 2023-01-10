@@ -22,8 +22,13 @@ jobs:
         uses: actions/setup-go@v3
         with: 
           go-version:  '>=1.18.1'
-      - name: Check go
-        run: go version
+      - name: Config Kubectl
+        uses: ThomasKliszowski/setup-kubectl@v1
+        with:
+          kube-config: ${{ secrets.KUBE_CONFIG }}
+          kube-version: 1.25.0
+      - name: Run Kubectl test
+        run: kubectl get namespace
 #       - name: Deploy K6-Operator
 #         uses: wahyd4/kubectl-helm-action@master
 #         env:
