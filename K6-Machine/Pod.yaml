@@ -26,7 +26,9 @@ spec:
       ports:
         - name: k6-port
           containerPort: 6565
-      command: ["/bin/sh","-c","sleep 30"]
+      command:
+        - sleep
+        - "3600"
       args: ["apk update --no-cache;apk add curl --no-cache;curl -o /home/scripts/test.js https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js;k6 run /home/scripts/test.js"]
       resources: {}
       volumeMounts:
