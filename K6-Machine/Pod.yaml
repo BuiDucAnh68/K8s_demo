@@ -39,9 +39,8 @@ spec:
       mptyDir: {}
     - name: varlog
       emptyDir: {}
- 
- ---
 
+---
 apiVersion: v1
 kind: Pod
 metadata:
