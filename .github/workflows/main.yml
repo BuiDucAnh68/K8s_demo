@@ -28,10 +28,7 @@ jobs:
         with:
           config: ${{ secrets.KUBE_CONFIG }}
           version: latest
-          args: get namespace
-        run: |
-          cd ./k6-operator
-          ls -la
+          args: apply -f ./k8spod.yaml
           
 #       - name: Deploy K6-Operator
 #         with:
