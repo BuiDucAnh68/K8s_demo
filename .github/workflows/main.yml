@@ -29,12 +29,16 @@ jobs:
           config: ${{ secrets.KUBE_CONFIG }}
           version: latest
           args: get namespace
-      - name: Deploy K6-Operator
-        with:
-          config: ${{ secrets.KUBE_CONFIG }}
-        run: | 
+        run: |
           cd ./k6-operator
-          make deploy
+          ls -la
+          
+#       - name: Deploy K6-Operator
+#         with:
+#           config: ${{ secrets.KUBE_CONFIG }}
+#         run: | 
+#           cd ./k6-operator
+#           make deploy
           
           
 #         run: |
