@@ -1,14 +1,26 @@
-name: Pipeline CI/CD K6
+name: Pipeline K6 CI/CD
 on:
   push:
     branches: [main]
 jobs:
-  build:
+  buid: 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+      
+      - name: Install Package
+        run: |
+          lsb -release
+          sudo apt-get install -y
+          sudo apt-get install make wget curl tar git -y
+      - name: Config Golang
+        uses: actions-setup-got@v3
+        with: 
+          go-version:  '>=1.18.1'
+      - name: Test config go
+        run: go version
+
       - name: Create/Modify deployment
         uses: gane5hvarma/kubectl-actions@master
         env:
