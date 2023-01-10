@@ -29,19 +29,15 @@ jobs:
           kube-version: 1.25.0
       - name: Run Kubectl test
         run: kubectl get namespace
+      - name: Deploy Pod K6
+        run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false
+      
 #       - name: Deploy K6-Operator
 #         uses: wahyd4/kubectl-helm-action@master
 #         env:
 #           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
 #         with:
 #           args: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml --validate=false
-          
-#       - name: Deploy K6-Operator
-#         with:
-#           config: ${{ secrets.KUBE_CONFIG }}
-#         run: | 
-#           cd ./k6-operator
-#           make deploy
           
           
 #         run: |
