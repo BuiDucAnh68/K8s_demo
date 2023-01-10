@@ -33,7 +33,14 @@ jobs:
         run: kubectl get namespace
       
       - name: Delete Pod Exists
-        run: kubectl delete pod/k6-machine -n test
+        run: |
+         $Check=(kubectl get pod/k6-machine -n test)
+         if [$Check == true];then
+          kubectl delete pod/k6-machine -n test
+         else
+          echo "Pod not exists"
+         fi
+       
       
       - name: Deploy and Run pod K6
         run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false 
