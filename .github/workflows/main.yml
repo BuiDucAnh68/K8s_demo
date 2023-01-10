@@ -25,9 +25,9 @@ jobs:
      
       - name: Deploy K6-Operator
         uses: wahyd4/kubectl-helm-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
         with:
-          config: ${{ secrets.KUBE_CONFIG }}
-          version: latest
           args: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml
           
 #       - name: Deploy K6-Operator
