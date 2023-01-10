@@ -33,10 +33,10 @@ jobs:
       - name: Deploy and Run pod K6
         run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false 
       
-      - name: Execute Pod K6
-        run: |
-          kubectl exec -it pod/k6-machine -n test sh
-          k6 run /home/scripts/test.js
+#       - name: Execute Pod K6
+#         run: |
+#           kubectl exec -it pod/k6-machine -n test sh
+#           k6 run /home/scripts/test.js
         
 #       - name: Deploy K6-Operator
 #         uses: wahyd4/kubectl-helm-action@master
