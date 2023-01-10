@@ -30,7 +30,7 @@ spec:
       args:
         - apk update --no-cache
         - apk add curl --no-cache
-        - curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js -o /home/scripts/test.js
+#         - curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js -o /home/scripts/test.js
        tty: true
       resources: {}
       volumeMounts:
