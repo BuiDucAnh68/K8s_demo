@@ -1,23 +1,28 @@
 name: Pipeline CI/CD K6
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build: 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-    
-      - uses: ./.github/workflows/main.yml 
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install make wget curl tar git -y
 
       - name: Config Golang
         uses: actions-setup-got@v3
         with: 
           go-version:  '>=1.18.1'
+        
+      - name: Install Package
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install make wget curl git -y
+      
       - name: Test config go
         run: go version
 
