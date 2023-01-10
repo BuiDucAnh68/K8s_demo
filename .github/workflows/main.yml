@@ -11,8 +11,7 @@ jobs:
       
       - name: Install Package
         run: |
-          lsb -release
-          sudo apt-get install -y
+          sudo apt-get update -y
           sudo apt-get install make wget curl tar git -y
 
       - name: Config Golang
