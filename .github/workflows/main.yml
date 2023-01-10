@@ -24,11 +24,15 @@ jobs:
           go-version:  '>=1.18.1'
      
       - name: Deploy K6-Operator
-        uses: myrotvorets/kubectl-action@2.0.0
-        with:
-          config: ${{ secrets.KUBE_CONFIG }}
-          version: latest
-          args: apply -f ./k8spod.yaml
+        run: |
+          cd ./k6-operator
+          make deploy
+        env:
+           ${{ secrets.KUBE_CONFIG }}
+#         with:
+#           config: ${{ secrets.KUBE_CONFIG }}
+#           version: latest
+#           args: apply -f ./k8spod.yaml
           
 #       - name: Deploy K6-Operator
 #         with:
