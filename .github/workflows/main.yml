@@ -28,7 +28,7 @@ jobs:
         with:
           config: ${{ secrets.KUBE_CONFIG }}
           version: latest
-          args: cd ./k6-operator && make deploy
+          args: kubectl get namespace
           
 #         run: |
 #           cd ./k6-operator
