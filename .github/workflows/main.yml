@@ -27,10 +27,15 @@ jobs:
      
       - name: Test config go
         run: go version
-
-      - name: Create/Modify deployment
-        uses: gane5hvarma/kubectl-actions@master
+      - name: Deploy K6-Operator
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
-        with:
-          args: apply -f ./K8s/deployment.yaml --validate=false
+        run: |
+          cd ./k6-operator
+          make deploy
+#       - name: Create/Modify deployment
+#         uses: gane5hvarma/kubectl-actions@master
+#         env:
+#           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
+#         with:
+#           args: apply -f ./K8s/deployment.yaml --validate=false
