@@ -31,9 +31,7 @@ jobs:
         run: kubectl get namespace
         
       - name: Deploy and Run pod K6
-        run: |
-          cd ./K6-Machine
-          kubectl apply -f Pod.yaml --validate=false
+        run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false && k6 run /home/scripts/test.js
         
       
         
