@@ -33,7 +33,7 @@ jobs:
         run: kubectl get namespace
       
       - name: Delete Pod Exists
-        run: kubectl delete pod/k6-machine -n test
+        run: kubectl delete pod/k6-machine-1 -n test && kubectl delete pod/k6-machine-2 -n test
        
       
       - name: Deploy and Run pod K6
