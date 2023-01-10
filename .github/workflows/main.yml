@@ -24,15 +24,10 @@ jobs:
           go-version:  '>=1.18.1'
      
       - name: Deploy K6-Operator
-        run: |
-          cd ./k6-operator
-          make deploy
-        env:
-           ${{ secrets.KUBE_CONFIG }}
-#         with:
-#           config: ${{ secrets.KUBE_CONFIG }}
-#           version: latest
-#           args: apply -f ./k8spod.yaml
+        with:
+          config: ${{ secrets.KUBE_CONFIG }}
+          version: latest
+          args: apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/k8spod.yaml
           
 #       - name: Deploy K6-Operator
 #         with:
