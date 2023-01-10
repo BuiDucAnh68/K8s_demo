@@ -29,9 +29,19 @@ jobs:
           kube-version: 1.25.0
       - name: Run Kubectl test
         run: kubectl get namespace
+        
       - name: Deploy Pod K6
         run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false
-      
+        
+      - name: Exec Pod K6-machine
+        run: |
+          kubectl exec -it pod/k6-machine -n test sh
+          apk update --no-cache
+          apk add curl --no-cache
+          curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js -o /home/scripts/test.js
+          K6_PROMETHEUS_RW_SERVER_URL=http://grafana.gt.zing.vn:9090/api/v1/write k6 run -o xk6-prometheus-rw /home/scripts/test.js
+          
+        
 #       - name: Deploy K6-Operator
 #         uses: wahyd4/kubectl-helm-action@master
 #         env:
