@@ -31,9 +31,11 @@ jobs:
         run: kubectl get namespace
         
       - name: Deploy and Run pod K6
-        run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false
+        run: |
+          cd ./K6-Machine
+          kubectl apply -f /Pod.yaml --validate=false
         
-
+      
         
 #       - name: Deploy K6-Operator
 #         uses: wahyd4/kubectl-helm-action@master
