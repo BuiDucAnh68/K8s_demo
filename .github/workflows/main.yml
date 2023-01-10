@@ -34,15 +34,7 @@ jobs:
         run: kubectl apply -f https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/K6-Machine/Pod.yaml --validate=false
         
       - name: Exec Pod K6-machine
-        run: kubectl exec -it pod/k6-machine -n test -- /bin/sh
-        
-      - name: Exec File Test K6
-        run: |
-          apk update --no-cache
-          apk add curl --no-cache
-          curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js -o /home/scripts/test.js
-          k6 run /home/scripts/test.js
-          
+        run: kubectl exec -it pod/k6-machine -n test -- /bin/sh && sleep(10) && apk update --no-cache && apk add curl --no-cache && curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/script.sh -o /home/script.sh && chmod 777 /home/script.sh && ./home/script.sh    
         
 #       - name: Deploy K6-Operator
 #         uses: wahyd4/kubectl-helm-action@master
