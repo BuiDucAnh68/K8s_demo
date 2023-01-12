@@ -5,6 +5,9 @@ kind: Pod
 metadata:
   name: k6-machine-1
   namespace: test
+  label:
+    type: test
+    app: k6-machine-1
 
 spec:
 #   initContainers: 
@@ -46,7 +49,9 @@ kind: Pod
 metadata:
   name: k6-machine-2
   namespace: test
-
+  label:
+    type: test
+    app: k6-machine-2
 spec:
   containers:
     - name: k6-machine-2
