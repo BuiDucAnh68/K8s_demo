@@ -39,7 +39,7 @@ spec:
 
   volumes:
     - name: filek6
-      mptyDir: {}
+      emptyDir: {}
     - name: varlog
       emptyDir: {}
 
