@@ -29,7 +29,7 @@ spec:
       ports:
         - name: k6-port-1
           containerPort: 6565
-      command: ["/bin/sh","-c","apk update --no-cache && apk add curl --no-cache && curl -o /home/scripts/test.js https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js && K6_PROMETHEUS_RW_SERVER_URL=http://grafana.gt.zing.vn:9090/api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js && cat /home/scripts/test.json"]
+      command: ["/bin/sh","-c","apk update --no-cache && apk add curl --no-cache && curl -o /home/scripts/test.js https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js && K6_PROMETHEUS_RW_SERVER_URL=http://10.0.45.239:9090/api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js && cat /home/scripts/test.json"]
       resources: {}
       volumeMounts:
         - name: filek6
@@ -62,7 +62,7 @@ spec:
       ports:
         - name: k6-port-2
           containerPort: 6565
-      command: ["/bin/sh","-c","apk update --no-cache && apk add curl --no-cache && curl -o /home/scripts/test.js https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js && K6_PROMETHEUS_RW_SERVER_URL=http://20.239.126.18/api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js && cat /home/scripts/test.json"]
+      command: ["/bin/sh","-c","apk update --no-cache && apk add curl --no-cache && curl -o /home/scripts/test.js https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js && K6_PROMETHEUS_RW_SERVER_URL=http://10.0.47.195:9091/api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js && cat /home/scripts/test.json"]
       resources: {}
       volumeMounts:
         - name: filek6
