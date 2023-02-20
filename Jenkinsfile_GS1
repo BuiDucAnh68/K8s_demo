@@ -16,7 +16,7 @@ pipeline{
         stage('Curl File JS'){
             steps{
                 container('k6-machine'){
-                    sh 'curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/loadtest_gs1.js -o /home/scripts/test.js'
+                    sh 'curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js -o /home/scripts/test.js'
                 }
             }
         }
