@@ -5,6 +5,11 @@ pipeline{
         yamlFile 'k8spod.yaml'
     }
    }
+   environment{
+        HTTP_PROXY="http://120.138.64.114:4080"
+        HTTPS_PROXY="http://120.138.64.114:4080"
+       
+   }
     stages{
         stage('Add Curl Container'){
             steps{
