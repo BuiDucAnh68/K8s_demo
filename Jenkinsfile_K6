@@ -2,14 +2,48 @@ pipeline{
     agent{
     kubernetes {
         cloud 'kubernetes'
-        yamlFile 'k8spod.yaml'
+        yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k6-machine
+  namespace: monitoring
+spec:
+  containers:
+    - name: k6-machine
+      image: ducanh68/xk6-output-influx-prometheus:latest
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        privileged: true
+      ports:
+        - name: k6-port
+          containerPort: 6565
+      command:
+        - sleep
+        - "1s"
+      tty: true
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "300m"
+        limits:
+          memory: "256Mi"
+          cpu: "800m"
+      volumeMounts:
+        - name: filek6
+          mountPath: /home/scripts/
+        - name: varlog
+          mountPath: /var/log/pods/
+
+  volumes:
+    - name: filek6
+      emptyDir: {}
+    - name: varlog
+      emptyDir: {}
+'''
     }
    }
-   environment{
-        HTTP_PROXY="http://120.138.64.114:4080"
-        HTTPS_PROXY="http://120.138.64.114:4080"
-       
-   }
+
     stages{
         stage('Add Curl Container'){
             steps{
