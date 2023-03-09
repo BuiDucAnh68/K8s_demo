@@ -1,56 +1,30 @@
-import http from "k6/http";
-import { check } from "k6";
+import http from 'k6/http';
+import { sleep, check } from 'k6';
+import { Counter } from 'k6/metrics';
 
-let url, opts, r;
+// A simple counter for http requests
 
-// Element skipped: jmeterTestPlan.hashTree.TestPlan.hashTree.ResultCollector
-// Element skipped: jmeterTestPlan.hashTree.TestPlan.hashTree.ResultCollector
+export const requests = new Counter('http_reqs');
 
-export let options = {
+export const options = {
   stages: [
-    {
-      target: 50,
-      duration: "30s",
-    },
+    { target: 1000, duration: '5m' },
+    { target: 10000, duration: '10m' },
+    { target: 0, duration: '1m' },
   ],
+  thresholds: {
+    http_reqs: ['count < 100'],
+  },
 };
 
-export default function (data) {
-  if (__VU >= 1 && __VU <= 50) {
-    /* Created from cURL on 2022-12-28T11:24:27.817 */
-    url =
-      "https://vlnh.mto.zing.vn/wlxxvng-prod/vng/payment/getServersByUserID?clientIP=125.235.136.88&ts=1671642108&userID=2332100573744275456&sig=092a2d0ca6ef879f7c578a68bfbc553f";
-    opts = {
-      redirects: 999,
-    };
-    r = http.request("GET", url, "", opts);
+export default function () {
 
-    url =
-      "https://vlnh.mto.zing.vn/wlxxvng-prod/vng/payment/getProducts?loginChannel=10&roleID=1050676753&serverID=1002&ts=1671642112623&userID=2332100573744275456&sig=465ff9dd0650a1b9e75958f260e80e9a";
-    opts = {
-      redirects: 999,
-    };
-    r = http.request("GET", url, "", opts);
+  const res = http.get('http://test.k6.io');
 
-    url =
-      "https://vlnh.mto.zing.vn/wlxxvng-prod/vng/payment/getRoles?clientIP=125.235.136.88&loginChannel=10&serverID=1002&ts=1671642111&userID=2332100573744275456&sig=db2e176d717b05b83faa1ba00fe6e6a8";
-    opts = {
-      redirects: 999,
-    };
-    r = http.request("GET", url, "", opts);
+  sleep(1);
 
-    url =
-      "https://vlnh.mto.zing.vn/wlxxvng-prod/vng/payment/getCCU?clientIP=49.213.81.56&ts=1671642175101&sig=ccbb211c13737b753b476dc9fc6fd52e";
-    opts = {
-      redirects: 999,
-    };
-    r = http.request("GET", url, "", opts);
-
-    url =
-      "https://vlnh.mto.zing.vn/wlxxvng-prod/vng/payment/getTrans?amount=10000000&clientID=&country=VN&currency=VND&loginChannel=10&orderNumber=2332118772703322112&productID=web.vlafk.ns40000&roleID=1050676753&serverID=1002&ts=1671642222035&userID=2332100573744275456&sig=817735f600f5bad4ca6092615cec41ed";
-    opts = {
-      redirects: 999,
-    };
-    r = http.request("GET", url, "", opts);
-  }
+  const checkRes = check(res, {
+    'status is 200': (r) => r.status === 200,
+    'response body': (r) => r.body.indexOf('Feel free to browse') !== -1,
+  });
 }
