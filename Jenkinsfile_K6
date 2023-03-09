@@ -23,14 +23,13 @@ pipeline{
         stage('Run Test K6 Stress Test'){
             steps{
                 container('k6-machine'){
-                    sh 'K6_PROMETHEUS_RW_SERVER_URL=http://grafana.gt.zing.vn:9090/api/v1/write k6 run -o xk6-prometheus-rw -o json=/home/scripts/test.json /home/scripts/test.js'
-                }
-            }
-        }
-        stage('Show Test JSON Dashboard Jenkins'){
-            steps{
-                container('k6-machine'){
-                    sh 'cat /home/scripts/test.json'
+                    sh '''
+                    K6_INFLUXDB_ORGANIZATION=gpc \
+                    K6_INFLUXDB_TOKEN=3gORsO0Dmg53nfx-sQUy40YFZv1I6SubKq-Os-To_iMcjNo7skJV_UJZPidg7WCoqlo-ys4Ag4MNWMMi_lLgvA== \
+                    K6_INFLUXDB_BUCKET=gpc_store \
+                    K6_PROMETHEUS_RW_SERVER_URL=http://10.0.128.65:9090/api/v1/write \
+                    k6 run -o xk6-influxdb=http://10.0.113.188:8086/ -o xk6-prometheus-rw /home/scripts/test.js
+                    '''
                 }
             }
         }
