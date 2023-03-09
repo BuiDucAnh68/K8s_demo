@@ -1,25 +1,12 @@
----
-## Deployment K6
 apiVersion: v1
 kind: Pod
 metadata:
   name: k6-machine
   namespace: monitoring
-
 spec:
-#   initContainers: 
-#     - name: init-script-downloader
-#       image: appropriate/curl
-#       args:
-#         - "-o"
-#         - "/home/scripts/test.js"
-#         - "https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js"
-#       volumeMounts:
-#       - name: filek6
-#         mountPath: /home/scripts/
   containers:
     - name: k6-machine
-      image: ducanh68/xk6-output-prometheus-remote:latest
+      image: ducanh68/xk6-output-influx-prometheus:latest
       imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
@@ -28,9 +15,15 @@ spec:
           containerPort: 6565
       command:
         - sleep
-        - "1d"
+        - "1s"
       tty: true
-      resources: {}
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "300m"
+        limits:
+          memory: "256Mi"
+          cpu: "800m"
       volumeMounts:
         - name: filek6
           mountPath: /home/scripts/
@@ -42,5 +35,3 @@ spec:
       emptyDir: {}
     - name: varlog
       emptyDir: {}
-   
-
