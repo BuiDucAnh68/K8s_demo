@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('Build Test'){
             steps{
-                sh 'Test Connection'
+                echo 'Test Connection'
             }
         }
     }
