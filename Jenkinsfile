@@ -1,7 +1,7 @@
 pipeline{
     agent{
-        docker {
-            image'docker:latest'
+        docker{
+            image 'docker:latest'
         }
     }
     environment{
@@ -10,7 +10,6 @@ pipeline{
     stages{
         stage('Buid Dockerfile'){
             steps{
-               sh 'docker build -t ducanh68/xk6-output-k6 .'
                sh 'docker ps -a'
              }
         }
