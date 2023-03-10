@@ -1,11 +1,7 @@
 pipeline{
-    agent{
-        docker{
-            image 'docker:latest'
-        }
-    }
+    agent any
     environment{
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        registryCredential = 'dockerhub'
     }
     stages{
         stage('Buid Dockerfile'){
