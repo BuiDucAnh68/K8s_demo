@@ -1,12 +1,12 @@
 pipeline{
     agent any
     environment{
-        registryCredential = 'dockerhub'
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
     stages{
         stage('Buid Dockerfile'){
             steps{
-               echo 'Test Connection Success'
+               sh 'docker build -t ducanh68/xk6-output .'
              }
         }
     }
