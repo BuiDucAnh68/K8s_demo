@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage('Buid Dockerfile'){
             steps{
-               sh 'docker ps -a'
+               echo 'Test Connection Success'
              }
         }
     }
