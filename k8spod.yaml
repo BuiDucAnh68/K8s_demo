@@ -17,13 +17,6 @@ spec:
         - sleep
         - "1s"
       tty: true
-      resources:
-        requests:
-          memory: "128Mi"
-          cpu: "300m"
-        limits:
-          memory: "256Mi"
-          cpu: "800m"
       volumeMounts:
         - name: filek6
           mountPath: /home/scripts/
