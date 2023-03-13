@@ -1,32 +1,20 @@
-pipeline{
- agent any
- options {
-    buildDiscarder(logRotator(numToKeepStr: '5'))
-  }
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-  }
-stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t ducanh68/xk6-output:latest .'
-      }
+podTemplate(yaml: '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:19.03.1-dind
+    securityContext:
+      privileged: true
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
+''') {
+    node(POD_LABEL) {
+             git 'https://github.com/nginxinc/docker-nginx.git'
+        container('docker') {
+            sh 'docker version && cd stable/alpine/ && docker build -t nginx-example .'
+        }
     }
-    stage('Login') {
-      steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
-    }
-    stage('Push') {
-      steps {
-        sh 'docker push ducanh68/xk6-output:latest'
-      }
-    }
-  }
-  post {
-    always {
-      sh 'docker logout'
-    }
-  }
 }
-
