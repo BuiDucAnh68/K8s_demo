@@ -3,9 +3,6 @@ pipeline{
  options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
- tools{
-  docker "docker"
- }
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
