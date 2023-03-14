@@ -4,12 +4,10 @@ pipeline{
         cloud 'kubernetes'
         }
         stages{
-            stage('Build K8s')
-            steps{
-                script{
-                    sh 'kubectl apply -f HorizonPodAutoScale/* '
+            stage('Build K8s'){
+                withKubeConfig([credentialsId: 'azure-aks']){
+                    sh 'kubectl apply -f HorizonPodAutoScale/*'
                 }
             }
-        }
     }
 }
