@@ -1,8 +1,4 @@
-pipeline{
-    agent {
-        kubernetes {
-        cloud 'kubernetes'
-        }
+node{
         stages{
             stage('Build K8s'){
                 withKubeConfig([credentialsId: 'azure-aks']){
@@ -12,4 +8,3 @@ pipeline{
             }
         }
     }
-}
