@@ -1,13 +1,33 @@
-node{
-
-            stage('Build K8s'){
-                withKubeConfig([credentialsId: 'azure-aks', serverUrl:'https://aks-k6-01-dns-b7091d7a.hcp.eastasia.azmk8s.io:443']){
-                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-                    sh 'chmod u+x ./kubectl' 
-                    sh 'curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/HorizonPodAutoScale/deployment.yaml -o deployment.yaml && ./kubectl apply -f deployment.yaml'
-                    sh 'curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/HorizonPodAutoScale/horizontalpodautoscale.yaml -o horizontalpodautoscale.yaml && ./kubectl apply -f horizontalpodautoscale.yaml'
-                    sh './kubectl get pods -A'
-                }
-            }
-        }
-    
+podTemplate(yaml: '''
+              apiVersion: v1
+              kind: Pod
+              spec:
+                volumes:
+                - name: docker-socket
+                  emptyDir: {}
+                containers:
+                - name: docker
+                  image: docker:19.03.1
+                  readinessProbe:
+                    exec:
+                      command: [sh, -c, "ls -S /var/run/docker.sock"]
+                  command:
+                  - sleep
+                  args:
+                  - 99d
+                  volumeMounts:
+                  - name: docker-socket
+                    mountPath: /var/run
+                - name: docker-daemon
+                  image: docker:19.03.1-dind
+                  securityContext:
+                    privileged: true
+                  volumeMounts:
+                  - name: docker-socket
+                    mountPath: /var/run
+''') {
+  node(POD_LABEL) {
+    writeFile file: 'Dockerfile', text: 'FROM scratch'
+    container('docker') {
+      sh 'docker version && DOCKER_BUILDKIT=1 docker build --progress plain -t testing .'
+    }
