@@ -1,35 +1,45 @@
+/**
+ * This pipeline will build and deploy a Docker image with Kaniko
+ * https://github.com/GoogleContainerTools/kaniko
+ * without needing a Docker host
+ *
+ * You need to create a jenkins-docker-cfg secret with your docker config
+ * as described in
+ * https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-in-the-cluster-that-holds-your-authorization-token
+ */
+
 podTemplate(yaml: '''
-              apiVersion: v1
               kind: Pod
               spec:
-                volumes:
-                - name: docker-socket
-                  emptyDir: {}
                 containers:
-                - name: docker
-                  image: docker:19.03.1
-                  readinessProbe:
-                    exec:
-                      command: [sh, -c, "ls -S /var/run/docker.sock"]
+                - name: kaniko
+                  image: gcr.io/kaniko-project/executor:v1.6.0-debug
+                  imagePullPolicy: Always
                   command:
                   - sleep
                   args:
                   - 99d
                   volumeMounts:
-                  - name: docker-socket
-                    mountPath: /var/run
-                - name: docker-daemon
-                  image: docker:19.03.1-dind
-                  securityContext:
-                    privileged: true
-                  volumeMounts:
-                  - name: docker-socket
-                    mountPath: /var/run
-''') {
+                    - name: jenkins-docker-cfg
+                      mountPath: /kaniko/.docker
+                volumes:
+                - name: jenkins-docker-cfg
+                  projected:
+                    sources:
+                    - secret:
+                        name: regcred
+                        items:
+                          - key: .dockerconfigjson
+                            path: config.json
+'''
+  ) {
+
   node(POD_LABEL) {
-    writeFile file: 'Dockerfile', text: 'FROM scratch'
-    container('docker') {
-      sh 'docker version && DOCKER_BUILDKIT=1 docker build --progress plain -t testing .'
+    stage('Build with Kaniko') {
+      git 'https://github.com/jenkinsci/docker-inbound-agent.git'
+      container('kaniko') {
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=mydockerregistry:5000/myorg/myimage'
+      }
     }
   }
 }
