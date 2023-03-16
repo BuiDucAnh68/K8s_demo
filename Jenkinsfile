@@ -6,6 +6,9 @@ pipeline{
         apiVersion: v1
         kind: Pod
         spec:
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           containers:
           - name: maven
             image: maven:alpine
@@ -14,9 +17,6 @@ pipeline{
             tty: true
           - name: docker
             image: docker:latest
-            securityContext:
-                privilleged: true
-                runAsUser: 0
             command:
             - cat
             tty: true
