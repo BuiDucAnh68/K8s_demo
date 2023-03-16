@@ -32,29 +32,36 @@ spec:
 '''
         }
     }
-    node{
+    stages{
         stage('Clone Repo'){
+            steps{
                 git branch: 'main', changelog: false, poll: false, url: 'https://github.com/BuiDucAnh68/K8s_demo.git'
+            }
         }
         stage('Build and Push Repo Kaniko To DockerHub '){
+            steps{
                 container(name: 'kaniko'){
-                    stage('Build Image xk6') {
-                        sh '''
+                    sh '''
                     /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=docker.io/ducanh68/xk6-output:$BUILD_NUMBER
                     '''
-                    }                    
                 }
-            }
-        
-        stage('Deploy And get Repo'){
-            withKubeConfig([credentialsId: 'azure-aks', serverUrl: 'https://aks-k6-01-dns-b7091d7a.hcp.eastasia.azmk8s.io:443']){
-                 sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-                 sh 'chmod u+x ./kubectl'  
-                 sh './kubectl get pods'
-                 sh './kubectl apply -f HorizonPodAutoScale/* '
             }
         }
 
+    }
+    node{
+        stage('List pods') {
+        git branch: 'main', changelog: false, poll: false, url: 'https://github.com/BuiDucAnh68/K8s_demo.git'
+            withKubeConfig([credentialsId: 'azure-aks']) {
+        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+        sh 'chmod u+x ./kubectl'  
+        sh './kubectl get pods'
+        sh 'cd HorizonPodAutoScale/ '
+        sh './kubectl apply -f deployment.yaml'
+        sh './kubectl apply -f horizontalpodautoscale.yaml'
+        
+    }
+  }
     }
 
 }
