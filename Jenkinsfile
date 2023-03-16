@@ -32,14 +32,15 @@ pipeline{
   }
   stages{
     stage('Build'){
-      containers('kaniko'){
       steps{
-        git 'https://github.com/BuiDucAnh68/K8s_demo.git'
-        sh 'docker build -t ducanh68/xk6-output .'
-        sh 'docker -version'
-      }
-      }
-
+        containers(name:'kaniko', shell: '/busybox/sh'){
+          sh '''
+              #!/busybox/sh
+              echo "FROM jenkins/inbound-agent:latest" > Dockerfile
+              /kaniko/executor --context `pwd` --destination ducanh68/busybox-hello-kaniko:latest
+              '''
+        }
+      
+    }
   }
-}
 }
