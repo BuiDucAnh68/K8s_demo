@@ -3,53 +3,47 @@ pipeline{
         kubernetes{
             cloud 'kubernetes'
             yaml '''
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          name: pod-machine
-          namespace: monitoring
-        spec:
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-          containers:
-          - name: maven
-            image: maven:alpine
-            command:
+apiVersion: v1
+kind: Pod
+metadata:
+    name: kaniko
+    namespace: monitoring
+spec:
+    containers:
+      - name: kaiko
+        image: gcr.io/kaniko-project/executor:debug
+        securityContext:
+            privileged: true
+        command: 
             - cat
-            tty: true
-          - name: docker
-            image: docker:dind
-            command: ["dockerd", "--host", "tcp://127.0.0.1:2375"]
-            securityContext:
-              privileged: true
-            tty: true
-            volumeMounts:
-             - mountPath: /var/run/docker.sock
-               name: docker-sock
-          volumes:
-          - name: docker-sock
-            hostPath:
-              path: /var/run/docker.sock
+        tty: true
+        volumeMounts:
+            - name: docker-config
+              mountPath: /kaniko/.docker
+    volumes:
+        - name: docker-config
+          projected:
+            sources:
+             - secret:
+                name: docker-credentials
+                items:
+                    - key: .dockerconfigjson
+                      path: config.json
 '''
         }
     }
     stages{
-        stage('Clone Repo'){
+        stage('Build Repo'){
             steps{
-                container('maven'){
-                     git branch: 'main', changelog: false, poll: false, url: 'https://github.com/BuiDucAnh68/K8s_demo.git'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/BuiDucAnh68/K8s_demo.git'
+                container(name: 'kaniko'){
+                    sh '''
+                    /kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=docker.io/ducanh68/xk6-output:$BUILD_NUMBER
+                    '''
                 }
             }
         }
-        stage('Build-Docker-Image'){
-            steps{
-                container('docker'){
-                    sh 'dockerd'
-                    sh 'docker info'
-                    sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
-                }
-            }
-        }
+
     }
+
 }
