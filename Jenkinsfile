@@ -47,6 +47,7 @@ pipeline{
                 container('docker'){
                     
                     sh 'docker info'
+                    sh 'dockerd'
                     sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
                 }
             }
