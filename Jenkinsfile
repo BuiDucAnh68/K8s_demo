@@ -33,11 +33,7 @@ spec:
         stage('Build with Kaniko'){
             git 'https://github.com/BuiDucAnh68/K8s_demo.git'
             container('kaniko'){
-                sh '/kaniko/executor --context=https://github.com/BuiDucAnh68/K8s_demo.git \ 
-                    --destination=ducanh68/xk6output:latest  \
-                    --insecure \
-                    --skip-tls-verify \
-                    -v=debug' 
+                sh '/kaniko/executor --context=https://github.com/BuiDucAnh68/K8s_demo.git --destination=ducanh68/xk6output:latest --insecure --skip-tls-verify -v=debug' 
             }
 
         }
