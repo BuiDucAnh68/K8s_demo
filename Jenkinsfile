@@ -13,7 +13,7 @@ pipeline{
             - cat
             tty: true
           - name: docker
-            image: docker:23.0.1-dind
+            image: docker:latest
             command:
             - cat
             tty: true
@@ -38,7 +38,8 @@ pipeline{
         stage('Build-Docker-Image'){
             steps{
                 container('docker'){
-                    sh 'docker build -t ducanh68/xk6-test:${BUILD_NUMBER}'
+                    sh 'docker buildx build --help'
+                    sh 'docker buildx buid -t ducanh68/xk6-test:${BUILD_NUMBER}'
                 }
             }
         }
