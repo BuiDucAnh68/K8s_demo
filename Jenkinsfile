@@ -46,6 +46,8 @@ pipeline{
             steps{
                 container('docker'){
                     sh 'rm -rf /var/run/docker.pid'
+                    sh 'groupadd docker'
+                    sh 'usermod -aG docker ${USER}'
                     sh 'dockerd'
                     sh 'docker info'
                     sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
