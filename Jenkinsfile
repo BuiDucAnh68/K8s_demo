@@ -5,6 +5,9 @@ pipeline{
             yaml '''
         apiVersion: v1
         kind: Pod
+        metadata:
+          name: pod-machine
+          namespace: monitoring
         spec:
           securityContext:
             runAsUser: 0
@@ -19,9 +22,7 @@ pipeline{
             image: docker:latest
             command: ["dockerd", "--host", "tcp://127.0.0.1:2375"]
             securityContext:
-                privilleged: true
-            command:
-            - cat
+              privileged: true
             tty: true
             volumeMounts:
              - mountPath: /var/run/docker.sock
