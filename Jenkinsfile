@@ -1,42 +1,59 @@
-podTemplate(yaml: '''
+pipeline{
+    agent{
+        kubernetes{
+            labels 'kaniko'
+            yaml '''
 apiVersion: v1
 kind: Pod
 metadata:
-  name: kaniko
-  namespace: monitoring
+    name: kaniko
 spec:
-  containers:
-    - name: kaniko
-      image: gcr.io/kaniko-project/executor:debug
-      securityContext:
-        privileged: true
-      imagePullPolicy: Always
-      command: 
+    containers:
+      - name: kaniko
+        image: gcr.io/kaniko-project/executor:debug
+        imagePullPolicy: Always
+        command:
         - /busybox/cat
-      tty: true
-      volumeMounts:
+        tty: true
+        volumeMounts:
+            - name: jenkins-docker-cfg
+            mountPath: /kaniko/.docker
+        volumes:
         - name: jenkins-docker-cfg
-          mountPath: /root/.docker
-  volumes:
-    - name: jenkins-docker-cfg
-      projected:
-        sources:
-        - secret: 
-            name: docker-credentials
-            items:
-              - key: .dockerconfigjson
-                path: config.json
+        projected:
+            sources:
+            - secret:
+                name: docker-credentials
+                items:
+                - key: .dockerconfigjson
+                    path: config.json
 '''
-
-){
-    node(POD_LABEL){
-        stage('Build with Kaniko'){
-            git 'https://github.com/BuiDucAnh68/K8s_demo.git'
-            container('kaniko'){
-                sh '/kaniko/executor --context=git://github.com/BuiDucAnh68/K8s_demo.git#refs/heads/main --destination=ducanh68/xk6output:v1 --insecure --skip-tls-verify -v=debug' 
-            }
-
         }
-
     }
+    environment{
+        registry = "ducanh68/xk6-output-test"
+        resgistry= 'dockerhub'
+    }
+    stages{
+        stage('Checkout'){
+            steps{
+                git 'https://github.com/BuiDucAnh68/K8s_demo.git'
+            }
+        }
+        stage('Build'){
+            environment{
+                REPOSITORY = 'ducanh68'
+                IMAGE = 'xk6-output-test'
+                REGISTRY = 'https://hub.docker.com/'
+            }
+            steps{
+                container(name: 'kaniko', shell: '/busybox/sh'){
+                    sh '''
+                    #!/busybox/sh
+                    /kanikok/executor -f `pwd`/Dockerfile -c `pwd` --cache=true --destination=${REGISTRY}/${REPOSITORY}/${IMAGE}
+                    '''
+                }
+            }
+        }
+    }   
 }
