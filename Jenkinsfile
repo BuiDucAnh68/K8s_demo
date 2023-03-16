@@ -55,7 +55,7 @@ spec:
                          sh 'chmod u+x ./kubectl'  
                          sh 'curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/HorizonPodAutoScale/Scale_Pod.yaml -o Scale_Pod.yaml'
                          sh './kubectl apply -f Scale_Pod.yaml'
-                         sh './kubectl get pods -n monitoring'
+                         sh './kubectl get pods'
                     }
                 }
             }
