@@ -45,6 +45,7 @@ pipeline{
         stage('Build-Docker-Image'){
             steps{
                 container('docker'){
+                    sh 'chmod 666 /var/run/docker.sock'
                     sh 'dockerd'
                     sh 'docker info'
                     sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
