@@ -38,6 +38,11 @@ spec:
     }
     stages{
         stage('Checkout'){
+              when {
+
+        branch "fix-*"
+
+      }
             steps{
                 git 'https://github.com/BuiDucAnh68/K8s_demo.git#refs/head/main'
             }
