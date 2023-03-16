@@ -17,6 +17,7 @@ pipeline{
             tty: true
           - name: docker
             image: docker:latest
+            command: ["dockerd", "--host", "tcp://127.0.0.1:2375"]
             securityContext:
                 privilleged: true
             command:
