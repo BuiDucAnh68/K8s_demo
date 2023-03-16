@@ -39,6 +39,9 @@ pipeline{
             steps{
                 container('docker'){
                     sh 'docker buildx build --help'
+                    sh 'systemctl unmask docker.service'
+                    sh 'systemctl unmask docker.socket'
+                    sh 'systemctl start docker.service'
                     sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
                 }
             }
