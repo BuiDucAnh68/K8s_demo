@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: k6-deployment
-        image: ducanh68/xk6-output-influx-prometheus:latest
+        image: ducanh68/xk6-output:$BUILD_NUMBER
         securityContext:
           privileged: true
         command: ["/bin/sh","-c","apk add --no-cache curl && touch /home/test.js && curl https://raw.githubusercontent.com/BuiDucAnh68/K8s_demo/main/test.js -o /home/test.js && K6_INFLUXDB_ORGANIZATION=gpc K6_INFLUXDB_TOKEN=3gORsO0Dmg53nfx-sQUy40YFZv1I6SubKq-Os-To_iMcjNo7skJV_UJZPidg7WCoqlo-ys4Ag4MNWMMi_lLgvA==  K6_INFLUXDB_BUCKET=gpc_store K6_PROMETHEUS_RW_SERVER_URL=http://10.0.128.65:9090/api/v1/write  k6 run -o xk6-influxdb=http://10.0.113.188:8086/ -o xk6-prometheus-rw /home/test.js", "sleep 1d"]
