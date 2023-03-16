@@ -2,10 +2,8 @@ podTemplate(yaml: '''
 apiVersion: v1
 kind: Pod
 metadata:
-  - name: kaniko
-    labels:
-        app: kaniko
-    namespace: monitoring
+  name: kaniko
+  namespace: monitoring
 spec:
   containers:
     - name: kaniko
