@@ -1,7 +1,7 @@
 pipeline{
     agent{
         kubernetes{
-            labels 'kaniko'
+            cloud 'kubernetes'
             yaml '''
 apiVersion: v1
 kind: Pod
