@@ -19,7 +19,7 @@ pipeline{
             - cat
             tty: true
           - name: docker
-            image: docker:latest
+            image: docker:dind
             command: ["dockerd", "--host", "tcp://127.0.0.1:2375"]
             securityContext:
               privileged: true
