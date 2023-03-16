@@ -49,7 +49,7 @@ spec:
         }
         stage('Deploy IAC To K8s'){
             steps{
-                scripts{
+                script{
                     withKubeConfig([credentialsId: 'azure-aks', serverUrl: 'https://aks-k6-01-dns-b7091d7a.hcp.eastasia.azmk8s.io:443']){
                          sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
                          sh 'chmod u+x ./kubectl'  
