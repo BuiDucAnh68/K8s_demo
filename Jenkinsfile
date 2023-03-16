@@ -26,7 +26,7 @@ spec:
                 name: docker-credentials
                 items:
                 - key: .dockerconfigjson
-                    path: config.json
+                  path: config.json
 '''
         }
     }
