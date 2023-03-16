@@ -9,8 +9,10 @@ metadata:
     name: kaniko
     namespace: monitoring
 spec:
+    securityContext:
+        runAsUser: 0
     containers:
-      - name: kaiko
+      - name: kaniko
         image: gcr.io/kaniko-project/executor:debug
         securityContext:
             privileged: true
