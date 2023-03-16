@@ -42,7 +42,6 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: k6-deployment
-    namespace: monitoring
   minReplicas: 1
   maxReplicas: 3
   metrics:
@@ -51,5 +50,5 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 10
+        averageUtilization: 50
 
