@@ -39,7 +39,7 @@ pipeline{
             steps{
                 container('docker'){
                     sh 'docker buildx build --help'
-                    sh 'docker buildx build -t ducanh68/xk6-test:${BUILD_NUMBER}'
+                    sh 'docker buildx build -f Dockerfile -t xk6-test:${BUILD_NUMBER}'
                 }
             }
         }
