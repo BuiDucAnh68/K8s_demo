@@ -1,50 +1,22 @@
-pipeline{
-  agent {
-    kubernetes{
-      yaml '''
-apiVersion: v1
+podTemplate(yaml: """
 kind: Pod
-metadata:
-  name: kaniko
-  namespace: monitoring
 spec:
   containers:
-    - name: kaniko
-      image: gcr.io/kaniko-project/executor:debug
-      securityContext:
-        privileged: true
-      imagePullPolicy: Always
-      command: 
-        - sleep
-      args:
-        - "9999"
-      volumeMounts:
-        - name: jenkins-docker-cfg
-          mountPath: /root/.docker
-  volumes:
-    - name: jenkins-docker-cfg
-      projected:
-        sources:
-        - secret: 
-            name: docker-credentials
-            items:
-              - key: .dockerconfigjson
-                path: config.json
-        '''
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
+    command:
+    - /busybox/cat
+    tty: true
+"""
+  ) {
+
+  node(POD_LABEL) {
+    stage('Build with Kaniko') {
+      git 'https://github.com/CWempe/docker-dummy.git'
+      container('kaniko') {
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --destination=image --tarPath=`pwd`'
+      }
     }
   }
-  stages{
-    stage('Build'){
-      steps{
-        containers(name:'kaniko', shell: '/busybox/sh'){
-          sh '''
-              #!/busybox/sh
-              echo "FROM jenkins/inbound-agent:latest" > Dockerfile
-              /kaniko/executor --context `pwd` --destination ducanh68/busybox-hello-kaniko:latest
-              '''
-        }
-      
-    }
-  }
-}
 }
