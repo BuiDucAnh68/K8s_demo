@@ -45,9 +45,9 @@ pipeline{
         stage('Build-Docker-Image'){
             steps{
                 container('docker'){
-                    sh 'dockerd'
+                    
                     sh 'docker info'
-//                     sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
+                    sh 'docker buildx build -f Dockerfile -t "ducanh68/xk6-test:${BUILD_NUMBER}" . '
                 }
             }
         }
