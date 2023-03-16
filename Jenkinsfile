@@ -16,6 +16,7 @@ pipeline{
             image: docker:latest
             securityContext:
                 privilleged: true
+                runAsUser: 0
             command:
             - cat
             tty: true
