@@ -30,7 +30,7 @@ spec:
 
 ){
     node(POD_LABEL){
-        stages('Build with Kaniko'){
+        stage('Build with Kaniko'){
             git 'https://github.com/BuiDucAnh68/K8s_demo.git'
             container('kaniko'){
                 sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --destination=ducanh68/xk6-output-test --tarPath=`pwd`'
