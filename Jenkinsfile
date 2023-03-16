@@ -3,64 +3,44 @@ pipeline{
         kubernetes{
             cloud 'kubernetes'
             yaml '''
-apiVersion: v1
-kind: Pod
-metadata:
-    name: kaniko
-spec:
-    containers:
-      - name: kaniko
-        image: gcr.io/kaniko-project/executor:debug
-        imagePullPolicy: Always
-        command:
-            - sleep
-        args:
-            - 999999
-        tty: true
-        volumeMounts:
-          - name: jenkins-docker-cfg
-            mountPath: /kaniko/.docker
-    volumes:
-      - name: jenkins-docker-cfg
-        projected:
-            sources:
-            - secret:
-                name: docker-credentials
-                items:
-                - key: .dockerconfigjson
-                  path: config.json
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: maven
+            image: maven:alpine
+            command:
+            - cat
+            tty: true
+          - name: docker
+            image: docker:latest
+            command:
+            - cat
+            tty: true
+            volumeMounts:
+             - mountPath: /var/run/docker.sock
+               name: docker-sock
+          volumes:
+          - name: docker-sock
+            hostPath:
+              path: /var/run/docker.sock
 '''
         }
     }
-    environment{
-        registry = "ducanh68/xk6-output-test"
-        resgistry= 'dockerhub'
-    }
     stages{
-        stage('Checkout'){
-              when {
-
-        branch "fix-*"
-
-      }
+        stage('Clone Repo'){
             steps{
-                git 'https://github.com/BuiDucAnh68/K8s_demo.git#refs/head/main'
-            }
-        }
-        stage('Build'){
-            environment{
-                REPOSITORY = 'ducanh68'
-                IMAGE = 'xk6-output-test'
-                REGISTRY = 'https://hub.docker.com/'
-            }
-            steps{
-                container(name: 'kaniko', shell: '/busybox/sh'){
-                    sh '''
-                    #!/busybox/sh
-                    /kanikok/executor -f `pwd`/Dockerfile -c `pwd` --cache=true --destination=${REGISTRY}/${REPOSITORY}/${IMAGE}
-                    '''
+                container('maven'){
+                     git branch: 'main', changelog: false, poll: false, url: 'https://github.com/BuiDucAnh68/K8s_demo.git'
                 }
             }
         }
-    }   
+        stage('Build-Docker-Image'){
+            steps{
+                container('docker'){
+                    sh 'docker build -t ducanh68/xk6-test:${BUILD_NUMBER}'
+                }
+            }
+        }
+    }
 }
