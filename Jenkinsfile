@@ -39,7 +39,7 @@ spec:
     stages{
         stage('Checkout'){
             steps{
-                git 'https://github.com/BuiDucAnh68/K8s_demo.git'
+                git 'https://github.com/BuiDucAnh68/K8s_demo.git#refs/head/main'
             }
         }
         stage('Build'){
