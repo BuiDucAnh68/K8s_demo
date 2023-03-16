@@ -13,13 +13,13 @@ spec:
         image: gcr.io/kaniko-project/executor:debug
         imagePullPolicy: Always
         command:
-        - /busybox/cat
+            - /busybox/cat
         tty: true
         volumeMounts:
             - name: jenkins-docker-cfg
-            mountPath: /kaniko/.docker
+              mountPath: /kaniko/.docker
         volumes:
-        - name: jenkins-docker-cfg
+            - name: jenkins-docker-cfg
         projected:
             sources:
             - secret:
