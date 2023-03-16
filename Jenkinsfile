@@ -17,6 +17,8 @@ pipeline{
             tty: true
           - name: docker
             image: docker:latest
+            securityContext:
+                privilleged: true
             command:
             - cat
             tty: true
