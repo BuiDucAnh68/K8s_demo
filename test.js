@@ -9,7 +9,7 @@ export const requests = new Counter('http_reqs');
 export const options = {
   stages: [
     { target: 200, duration: '1m'},
-    { target: 6000, duration: '2m' },
+    { target: 600, duration: '1m' },
 //     { target: 1000, duration: '3m'},
   ],
 //   thresholds: {
